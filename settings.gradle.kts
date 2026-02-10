@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "BailaApp"
 include(":app")
+include(":backend-server")
