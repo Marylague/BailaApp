@@ -17,24 +17,24 @@ public class Outfit {
     private Long Id;
 
     @Column(nullable = false)
-    private String Name;
+    private String name;
 
     @Column(nullable = false)
-    private String Description;
+    private String description;
 
     @Column(nullable = false)
-    private Integer Rating;
+    private Integer rating;
 
     @Column(nullable = false)
-    private Integer Size;
+    private Integer size;
 
     @Column(nullable = false)
-    private Double Price;
+    private Double price;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Material Material;
+    private Material material;
 
     @Column(nullable = false)
-    private String ImageURL;
+    private String imageURL;
 }
