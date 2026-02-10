@@ -1,4 +1,4 @@
-package com.example.backend_server.domainPart.models;
+package com.example.backend_server.models.entitys;
 
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
-package com.example.backend_server.infrustructure.outAdapters.jpa;
+package com.example.backend_server.repositories;
 
-
-import com.example.backend_server.domainPart.models.Outfit;
+import com.example.backend_server.models.entitys.Outfit;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
