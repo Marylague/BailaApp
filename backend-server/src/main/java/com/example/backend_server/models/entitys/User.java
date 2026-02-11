@@ -1,5 +1,6 @@
 package com.example.backend_server.models.entitys;
 
+import com.example.backend_server.models.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,4 +36,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
+
+    public User(UserDto dto) {
+        this.id = dto.getId();
+        this.username = dto.getUsername();
+        this.email = dto.getEmail();
+        this.role = dto.getRole();
+    }
 }

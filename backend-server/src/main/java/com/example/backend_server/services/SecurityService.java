@@ -1,0 +1,46 @@
+package com.example.backend_server.services;
+
+import com.example.backend_server.models.entitys.User;
+import com.example.backend_server.repositories.JPAUserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+@Service("securityService")
+public class SecurityService {
+
+    private final JPAUserRepository userRepository;
+
+    @Autowired
+    public SecurityService(JPAUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean canAccessUser(Long userId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = auth.getName();
+
+        User currentUser = userRepository.findByUsername(currentUsername).orElse(null);
+        if (currentUser == null) return false;
+
+        return currentUser.getId().equals(userId) ||
+                currentUser.getRole().name().equals("ADMIN");
+    }
+
+    public boolean canModifyUser(Long userId) {
+        return canAccessUser(userId);
+    }
+
+    public boolean canModifyPet(Long petId) {
+        return hasAdminRole();
+    }
+
+    public boolean hasAdminRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+}
+
