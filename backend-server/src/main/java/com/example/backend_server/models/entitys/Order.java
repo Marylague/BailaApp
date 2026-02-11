@@ -1,10 +1,15 @@
 package com.example.backend_server.models.entitys;
 
+import com.example.backend_server.models.dto.OrderDto;
+import com.example.backend_server.models.dto.OrderItemDto;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +32,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
+
+    private String comment;
+
     @CreationTimestamp // Автоматически устанавливает дату создания
     private LocalDateTime createdAt;
 
@@ -37,5 +47,21 @@ public class Order {
     public Order(User user) {
         this.user = user;
         this.status = OrderStatus.CREATED;
+    }
+
+    public Order(OrderDto dto, User user) {
+        this.id = dto.getId();
+        this.user = user;
+        if (dto.getStatus() != null) this.status = OrderStatus.valueOf(dto.getStatus());
+        this.deliveryAddress = dto.getDeliveryAddress();
+        this.comment = dto.getComment();
+        this.createdAt = dto.getCreatedAt();
+        if (dto.getOrderItems() != null) {
+            this.orderItems = dto.getOrderItems().stream()
+                    .map(OrderItem::new)
+                    .collect(Collectors.toList());
+        } else {
+            this.orderItems = Collections.emptyList();
+        }
     }
 }

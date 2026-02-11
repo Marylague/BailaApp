@@ -1,5 +1,7 @@
 package com.example.backend_server.models.entitys;
 
+import com.example.backend_server.models.dto.OrderItemDto;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,12 +16,10 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Многие к одному: Много OrderItem могут быть в одном заказе
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // Многие к одному: Много OrderItem могут ссылаться на один товар
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "outfit_id")
     private Outfit outfit;
@@ -28,5 +28,12 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(nullable = false)
-    private Double price; // Цена на момент покупки
+    private Double price;
+
+    public OrderItem(OrderItemDto dto) {
+        this.id = dto.getId();
+        this.outfit = dto.getOutfit();
+        this.quantity = dto.getQuantity();
+        this.price = dto.getPrice();
+    }
 }

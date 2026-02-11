@@ -1,5 +1,8 @@
 package com.example.backend_server.models.entitys;
 
+
+import com.example.backend_server.models.dto.OutfitDto;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,4 +40,17 @@ public class Outfit {
 
     @Column(nullable = false)
     private String imageURL;
+
+    public Outfit(OutfitDto dto) {
+        this.Id = dto.getId();
+        this.name = dto.getName();
+        this.rating = dto.getRating();
+        this.description = dto.getDescription();
+        this.size = dto.getSize();
+        this.price = dto.getPrice();
+        if (dto.getMaterial() != null) {
+            this.material = Material.valueOf(dto.getMaterial());
+        }
+        this.imageURL = dto.getImageURL();
+    }
 }

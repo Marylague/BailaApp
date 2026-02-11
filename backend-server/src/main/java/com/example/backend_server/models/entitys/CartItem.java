@@ -1,5 +1,7 @@
 package com.example.backend_server.models.entitys;
 
+import com.example.backend_server.models.dto.CartItemDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,4 +37,11 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    public CartItem(CartItemDto dto, Cart cart) {
+        this.Id = dto.getId();
+        this.cart = cart;
+        this.outfit = dto.getOutfit();
+        this.quantity = dto.getQuantity();
+    }
 }

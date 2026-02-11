@@ -1,7 +1,11 @@
 package com.example.backend_server.models.entitys;
 
 
+import com.example.backend_server.models.dto.CartDto;
+import com.example.backend_server.models.dto.CartItemDto;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,11 +19,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Table(name = "carts_info")
+@Entity
 @NoArgsConstructor
 public class Cart {
     @Id
@@ -37,5 +44,15 @@ public class Cart {
         this.user = user;
     }
 
-    // добавление + удаление элемента из корзины
+    public Cart(CartDto dto, User user) {
+        this.Id = dto.getId();
+        this.user = user;
+        if (dto.getCartItems() != null) {
+            this.cartItems = dto.getCartItems().stream()
+                    .map(itemDto -> new CartItem(itemDto, this))
+                    .collect(Collectors.toList());
+        } else {
+            this.cartItems = Collections.emptyList();
+        }
+    }
 }
