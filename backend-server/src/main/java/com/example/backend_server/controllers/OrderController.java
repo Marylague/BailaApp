@@ -1,7 +1,8 @@
 package com.example.backend_server.controllers;
 
-import com.example.backend_server.models.dto.OutfitDto;
-import com.example.backend_server.services.OutfitService;
+import com.example.backend_server.models.dto.OrderDto;
+import com.example.backend_server.models.entitys.User;
+import com.example.backend_server.services.OrderService;
 import com.example.backend_server.services.SecurityService;
 
 import org.springframework.http.HttpStatus;
@@ -15,24 +16,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/outfit")
+@RequestMapping("api/order")
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-public class OutfitController {
-    private final OutfitService service;
+public class OrderController {
+    private final OrderService service;
     private final SecurityService securityService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("@securityService.hasAdminRole")
-    public OutfitDto create(@RequestBody OutfitDto outfit) {
+    public OrderDto create(@RequestBody OrderDto order) {
         // checks
-        return service.save(outfit);
+        User currentUser = securityService.getCurrentUserInfo();
+        return service.save(order, currentUser);
     }
 
     @DeleteMapping("/{id}")
@@ -43,22 +44,23 @@ public class OutfitController {
 
     @DeleteMapping("/entity")
     @PreAuthorize("@securityService.hasAdminRole")
-    public void deleteByEntity(@RequestBody OutfitDto outfit) {
-        service.deleteByEntity(outfit);
+    public void deleteByEntity(@RequestBody OrderDto order) {
+        service.deleteByEntity(order);
     }
 
     @PutMapping()
     @PreAuthorize("@securityService.hasAdminRole")
-    public OutfitDto update(@RequestBody OutfitDto dto) {
+    public OrderDto update(@RequestBody OrderDto dto) {
         //checks
-        return service.save(dto);
+        User currentUser = securityService.getCurrentUserInfo();
+        return service.save(dto, currentUser);
     }
 
     @GetMapping("/{id}")
-    public OutfitDto getById(@PathVariable long id) {
+    public OrderDto getById(@PathVariable long id) {
         return service.getById(id);
     }
 
     @GetMapping("/entity")
-    public OutfitDto getByEntity(@RequestBody OutfitDto outfit){return service.getByEntity(outfit);}
+    public OrderDto getByEntity(@RequestBody OrderDto order){return service.getByEntity(order);}
 }

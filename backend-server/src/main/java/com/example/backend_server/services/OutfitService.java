@@ -23,8 +23,6 @@ public class OutfitService {
         return new OutfitDto(repository.save(new Outfit(dto)));
     }
 
-    // update тут еще свои проверки
-
     public OutfitDto getById(long id) {
         Optional<Outfit> toFind = repository.findById(id);
         if (toFind.isPresent()) {

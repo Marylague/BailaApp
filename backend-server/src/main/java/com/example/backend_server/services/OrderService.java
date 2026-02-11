@@ -24,8 +24,6 @@ public class OrderService {
         return new OrderDto(repository.save(new Order(dto, user)));
     }
 
-    // update
-
     public OrderDto getById(long id) {
         Optional<Order> toFind = repository.findById(id);
         if (toFind.isPresent()) {

@@ -29,13 +29,21 @@ public class SecurityService {
                 currentUser.getRole().name().equals("ADMIN");
     }
 
+    public User getCurrentUserInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = auth.getName();
+
+        User currentUser = userRepository.findByUsername(currentUsername).orElse(null);
+        return currentUser;
+    }
+
     public boolean canModifyUser(Long userId) {
         return canAccessUser(userId);
     }
 
-    public boolean canModifyPet(Long petId) {
-        return hasAdminRole();
-    }
+//    public boolean canModifyElement() {
+//        return hasAdminRole();
+//    }
 
     public boolean hasAdminRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
